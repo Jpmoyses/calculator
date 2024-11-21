@@ -1,5 +1,5 @@
 import {animate} from "https://cdn.jsdelivr.net/npm/motion@11.11.13/+esm";
-// import {animate} from "motion";
+// import {animate, easeOut} from "motion";
 
 let buttons = document.querySelectorAll("button");
 let screen = document.querySelector(".screen"); 
@@ -73,6 +73,22 @@ function normalNumbers(){
 function clearAll(){
     let allNumbers = document.querySelectorAll("p");
     allNumbers.forEach((item) =>{
-        item.outerHTML = "";
+        animate(item, { y: [0, -100] }, { ease: "easeOut" });
+        animate(item, { opacity: 0});
+        setTimeout(() => item.outerHTML = "", 300);
     })
 }
+
+function operate(num1, operator, num2){
+    if(operator == "+") return num1 + num2;
+    if(operator == "-") return num1 - num2;
+    if(operator == "*") return num1 * num2;
+    if(operator == "/") return num1 / num2;
+}
+
+
+//maybe put it on a variable when click
+//maybe get from <p>
+//maybe put input?
+//max 2 operator
+//make = button
