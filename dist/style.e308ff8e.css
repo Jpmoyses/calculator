@@ -43,7 +43,7 @@ button{
     height: 140px;
     background-color: #F1F0E8;
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
 }
 
@@ -70,5 +70,13 @@ button{
 .mousedown{
     background-color: #9aaeb6;
 }
+
+p{
+    font-size: 70px;
+    padding: 0;
+    margin: 0;
+}
+
+
 
 /*# sourceMappingURL=/style.e308ff8e.css.map */

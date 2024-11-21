@@ -1,8 +1,11 @@
-import { animate} from "https://cdn.jsdelivr.net/npm/motion@11.11.13/+esm"
+import {animate} from "https://cdn.jsdelivr.net/npm/motion@11.11.13/+esm";
+// import {animate} from "motion";
 
-let containerBtn = document.querySelectorAll("button");
+let buttons = document.querySelectorAll("button");
+let screen = document.querySelector(".screen"); 
 
-containerBtn.forEach((btn) =>{
+
+buttons.forEach((btn) =>{
     btn.addEventListener("mouseover", () =>{
         btn.classList.add("mouseover");
         animate(btn, { scale: 1.1 })
@@ -18,5 +21,20 @@ containerBtn.forEach((btn) =>{
     btn.addEventListener("mouseup", () =>{
         btn.classList.remove("mousedown");
     })
+    if(btn.id != "op"){
+        btn.addEventListener("click", () =>{
+            const number = btn.innerText;
+            let screenNumber = document.createElement("p");
+            screenNumber.innerText = number;
+            screen.appendChild(screenNumber);
+        })
+    }
+    else{
+        btn.addEventListener("click", () =>{
+            const number = btn.innerText;
+            let screenNumber = document.createElement("p");
+            screenNumber.innerText = number;
+            screen.appendChild(screenNumber);
+        })
+    }
 })
-
