@@ -1,4 +1,4 @@
-import {animate} from "motion"
+import { animate} from "https://cdn.jsdelivr.net/npm/motion@11.11.13/+esm"
 
 let containerBtn = document.querySelectorAll("button");
 
