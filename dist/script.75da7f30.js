@@ -118,11 +118,13 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 
   return newRequire;
 })({"script.js":[function(require,module,exports) {
-//import {animate} from "https://cdn.jsdelivr.net/npm/motion@11.11.13/+esm";
+// // import {animate} from "https://cdn.jsdelivr.net/npm/motion@11.11.13/+esm";
 // import {animate} from "motion";
 
 var buttons = document.querySelectorAll("button");
 var screen = document.querySelector(".screen");
+var numberOfItems = 0;
+var totalOfItems = 0;
 buttons.forEach(function (btn) {
   btn.addEventListener("mouseover", function () {
     btn.classList.add("mouseover");
@@ -143,12 +145,22 @@ buttons.forEach(function (btn) {
   btn.addEventListener("mouseup", function () {
     btn.classList.remove("mousedown");
   });
-  if (btn.id != "op") {
+  if (btn.id == "clear") {
     btn.addEventListener("click", function () {
+      numberOfItems = 0;
+      totalOfItems = 0;
+      clearAll();
+    });
+  } else if (btn.id != "op") {
+    btn.addEventListener("click", function () {
+      if (numberOfItems > 6) return;
       var number = btn.innerText;
       var screenNumber = document.createElement("p");
       screenNumber.innerText = number;
       screen.appendChild(screenNumber);
+      numberOfItems++;
+      totalOfItems++;
+      if (totalOfItems >= 14) tooManyNumbers();else normalNumbers();
     });
   } else {
     btn.addEventListener("click", function () {
@@ -156,9 +168,29 @@ buttons.forEach(function (btn) {
       var screenNumber = document.createElement("p");
       screenNumber.innerText = number;
       screen.appendChild(screenNumber);
+      numberOfItems = 0;
+      if (totalOfItems >= 14) tooManyNumbers();else normalNumbers();
     });
   }
 });
+function tooManyNumbers() {
+  var allNumbers = document.querySelectorAll("p");
+  allNumbers.forEach(function (item) {
+    item.style.fontSize = "40px";
+  });
+}
+function normalNumbers() {
+  var allNumbers = document.querySelectorAll("p");
+  allNumbers.forEach(function (item) {
+    item.style.fontSize = "70px";
+  });
+}
+function clearAll() {
+  var allNumbers = document.querySelectorAll("p");
+  allNumbers.forEach(function (item) {
+    item.outerHTML = "";
+  });
+}
 },{}],"../../.nvm/versions/node/v22.11.0/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
