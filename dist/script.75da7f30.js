@@ -8638,36 +8638,47 @@ buttons.forEach(function (btn) {
   else {
     btn.addEventListener("click", function () {
       var number = btn.innerText;
+      // 0 operators doesnt show =
       if (totalOperators == 0 && btn.innerText == "=") return;
       totalOperators++;
+      // only 2 sets of numbers can be dealt with a time, if more than 1 operator, operates and then adds the next operator
       if (totalOperators > 1 && btn.innerText != "=") {
         concatNumbers(lastOperator);
         totalOperators++;
-      } else if (totalOperators > 1 && btn.innerText == "=") concatNumbers(lastOperator);
+      }
+      // if generic operation (x+x=), computes normally
+      else if (totalOperators > 1 && btn.innerText == "=") concatNumbers(lastOperator);
+
+      // adds operator to screen
       if (btn.innerText != "=") {
         var screenNumber = document.createElement("p");
         screenNumber.innerText = number;
         screen.appendChild(screenNumber);
         lastOperator = btn.innerText;
       }
-      console.log(lastOperator);
       numberOfItems = 0;
       if (totalOfItems >= 14) tooManyNumbers();else normalNumbers();
     });
   }
 });
+
+// changes font of the screen
 function tooManyNumbers() {
   var allNumbers = document.querySelectorAll("p");
   allNumbers.forEach(function (item) {
     item.style.fontSize = "40px";
   });
 }
+
+// changes font of the screen
 function normalNumbers() {
   var allNumbers = document.querySelectorAll("p");
   allNumbers.forEach(function (item) {
     item.style.fontSize = "70px";
   });
 }
+
+// clear the screen
 function clearAll() {
   numberOfItems = 0;
   totalOfItems = 0;
@@ -8686,22 +8697,32 @@ function clearAll() {
     }, 300);
   });
 }
+
+// gets the numbers and calculate them
 function concatNumbers(operator) {
   var allNumbers = document.querySelectorAll("p");
   var num1 = '';
   var num2 = '';
   var i = 0;
   var x = 0;
+
+  // put numbers on a string
   allNumbers.forEach(function (item) {
     if (item.id != "num") i++;
     x++;
     if (i == 0) num1 = num1.concat(item.innerText);else if (x > 1 && i > 0) num2 = num2.concat(item.innerText);
   });
+  // replace all operators
+  num2 = num2.replace("+", "").replace("-", "").replace("*", "").replace("/", "");
+
+  // remove count of operators
   totalOperators = 0;
-  console.log(operator);
+
+  // calculate
   var totalCount = operate(Number(num1), operator, Number(num2));
-  console.log(totalCount);
   clearAll();
+
+  // add it to the screen
   var newNum = document.createElement("p");
   newNum.setAttribute("id", "num");
   newNum.innerText = totalCount;
@@ -8710,13 +8731,10 @@ function concatNumbers(operator) {
 function operate(num1, operator, num2) {
   console.log(num1, operator, num2);
   if (operator == "+") return num1 + num2;
-  if (operator == "-") return num1 + num2;
+  if (operator == "-") return num1 - num2;
   if (operator == "*") return num1 * num2;
   if (operator == "/") return num1 / num2;else return 0;
 }
-
-//max 2 operator
-//make = button
 },{"motion":"../../node_modules/motion/dist/es/motion/lib/index.mjs"}],"../../.nvm/versions/node/v22.11.0/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';

@@ -1,5 +1,5 @@
-import {animate} from "https://cdn.jsdelivr.net/npm/motion@11.11.13/+esm";
-//import {animate, easeOut, easeIn} from "motion";
+//import {animate} from "https://cdn.jsdelivr.net/npm/motion@11.11.13/+esm";
+import {animate, easeOut, easeIn} from "motion";
 
 let buttons = document.querySelectorAll("button");
 let screen = document.querySelector(".screen"); 
@@ -55,19 +55,21 @@ buttons.forEach((btn) =>{
     else{
         btn.addEventListener("click", () =>{
             const number = btn.innerText;
+            // 0 operators doesnt show =
             if (totalOperators == 0 && btn.innerText == "=")return;
             totalOperators++;
+            // only 2 sets of numbers can be dealt with a time, if more than 1 operator, operates and then adds the next operator
             if (totalOperators > 1 && btn.innerText != "=") {concatNumbers(lastOperator); totalOperators++;}
+            // if generic operation (x+x=), computes normally
             else if(totalOperators > 1 && btn.innerText == "=") concatNumbers(lastOperator);
             
+            // adds operator to screen
             if(btn.innerText != "="){
                 let screenNumber = document.createElement("p");
                 screenNumber.innerText = number;
                 screen.appendChild(screenNumber);
                 lastOperator = btn.innerText;
             }
-
-            console.log(lastOperator);
 
             numberOfItems = 0;
             if(totalOfItems >= 14) tooManyNumbers();
@@ -76,6 +78,7 @@ buttons.forEach((btn) =>{
     }
 })
 
+// changes font of the screen
 function tooManyNumbers(){
     let allNumbers = document.querySelectorAll("p");
     allNumbers.forEach((item) =>{
@@ -83,6 +86,7 @@ function tooManyNumbers(){
     })
 }
 
+// changes font of the screen
 function normalNumbers(){
     let allNumbers = document.querySelectorAll("p");
     allNumbers.forEach((item) =>{
@@ -90,6 +94,7 @@ function normalNumbers(){
     })
 }
 
+// clear the screen
 function clearAll(){
     numberOfItems = 0;
     totalOfItems = 0;
@@ -102,6 +107,7 @@ function clearAll(){
     })
 }
 
+// gets the numbers and calculate them
 function concatNumbers(operator){
     let allNumbers = document.querySelectorAll("p");
     let num1 = '';
@@ -109,38 +115,34 @@ function concatNumbers(operator){
     let i = 0;
     let x = 0;
     
+    // put numbers on a string
     allNumbers.forEach((item) =>{
         if(item.id != "num") i++; x++;
         if(i == 0) num1 = num1.concat(item.innerText);
         else if(x > 1 && i > 0)  num2 = num2.concat(item.innerText);
     });
-    
+    // replace all operators
+    num2 = num2.replace("+", "").replace("-", "").replace("*", "").replace("/", "");
 
+    // remove count of operators
     totalOperators = 0;
-
-    console.log(operator);
     
+    // calculate
     let totalCount = operate(Number(num1), operator, Number(num2));
-    console.log(totalCount);
-    
     clearAll();
+
+    // add it to the screen
     let newNum = document.createElement("p");
     newNum.setAttribute("id", "num");
     newNum.innerText = totalCount;
     screen.appendChild(newNum);
 }
 
-
-
 function operate(num1, operator, num2){
     console.log(num1, operator, num2);
     if(operator == "+") return num1 + num2;
-    if(operator == "-") return num1 + num2;
+    if(operator == "-") return num1 - num2;
     if(operator == "*") return num1 * num2;
     if(operator == "/") return num1 / num2;
     else return 0;
 }
-
-
-//max 2 operator
-//make = button
