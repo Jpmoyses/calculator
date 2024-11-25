@@ -1,5 +1,5 @@
-//import {animate} from "https://cdn.jsdelivr.net/npm/motion@11.11.13/+esm";
-import {animate, easeOut, easeIn} from "motion";
+import {animate} from "https://cdn.jsdelivr.net/npm/motion@11.11.13/+esm";
+//import {animate, easeOut, easeIn} from "motion";
 
 let buttons = document.querySelectorAll("button");
 let screen = document.querySelector(".screen"); 
