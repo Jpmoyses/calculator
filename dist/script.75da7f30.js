@@ -8588,7 +8588,10 @@ var buttons = document.querySelectorAll("button");
 var screen = document.querySelector(".screen");
 var numberOfItems = 0;
 var totalOfItems = 0;
+var totalOperators = 0;
+var lastOperator = '';
 buttons.forEach(function (btn) {
+  // animations
   btn.addEventListener("mouseover", function () {
     btn.classList.add("mouseover");
     (0, _motion.animate)(btn, {
@@ -8608,29 +8611,46 @@ buttons.forEach(function (btn) {
   btn.addEventListener("mouseup", function () {
     btn.classList.remove("mousedown");
   });
+
+  // clear
   if (btn.id == "clear") {
     btn.addEventListener("click", function () {
-      numberOfItems = 0;
-      totalOfItems = 0;
       clearAll();
     });
-  } else if (btn.id != "op") {
+  }
+
+  // numbers
+  else if (btn.id != "op") {
     btn.addEventListener("click", function () {
       if (numberOfItems > 6) return;
       var number = btn.innerText;
       var screenNumber = document.createElement("p");
+      screenNumber.setAttribute("id", "num");
       screenNumber.innerText = number;
       screen.appendChild(screenNumber);
       numberOfItems++;
       totalOfItems++;
       if (totalOfItems >= 14) tooManyNumbers();else normalNumbers();
     });
-  } else {
+  }
+
+  // operators
+  else {
     btn.addEventListener("click", function () {
       var number = btn.innerText;
-      var screenNumber = document.createElement("p");
-      screenNumber.innerText = number;
-      screen.appendChild(screenNumber);
+      if (totalOperators == 0 && btn.innerText == "=") return;
+      totalOperators++;
+      if (totalOperators > 1 && btn.innerText != "=") {
+        concatNumbers(lastOperator);
+        totalOperators++;
+      } else if (totalOperators > 1 && btn.innerText == "=") concatNumbers(lastOperator);
+      if (btn.innerText != "=") {
+        var screenNumber = document.createElement("p");
+        screenNumber.innerText = number;
+        screen.appendChild(screenNumber);
+        lastOperator = btn.innerText;
+      }
+      console.log(lastOperator);
       numberOfItems = 0;
       if (totalOfItems >= 14) tooManyNumbers();else normalNumbers();
     });
@@ -8649,6 +8669,8 @@ function normalNumbers() {
   });
 }
 function clearAll() {
+  numberOfItems = 0;
+  totalOfItems = 0;
   var allNumbers = document.querySelectorAll("p");
   allNumbers.forEach(function (item) {
     (0, _motion.animate)(item, {
@@ -8664,16 +8686,35 @@ function clearAll() {
     }, 300);
   });
 }
+function concatNumbers(operator) {
+  var allNumbers = document.querySelectorAll("p");
+  var num1 = '';
+  var num2 = '';
+  var i = 0;
+  var x = 0;
+  allNumbers.forEach(function (item) {
+    if (item.id != "num") i++;
+    x++;
+    if (i == 0) num1 = num1.concat(item.innerText);else if (x > 1 && i > 0) num2 = num2.concat(item.innerText);
+  });
+  totalOperators = 0;
+  console.log(operator);
+  var totalCount = operate(Number(num1), operator, Number(num2));
+  console.log(totalCount);
+  clearAll();
+  var newNum = document.createElement("p");
+  newNum.setAttribute("id", "num");
+  newNum.innerText = totalCount;
+  screen.appendChild(newNum);
+}
 function operate(num1, operator, num2) {
+  console.log(num1, operator, num2);
   if (operator == "+") return num1 + num2;
-  if (operator == "-") return num1 - num2;
+  if (operator == "-") return num1 + num2;
   if (operator == "*") return num1 * num2;
-  if (operator == "/") return num1 / num2;
+  if (operator == "/") return num1 / num2;else return 0;
 }
 
-//maybe put it on a variable when click
-//maybe get from <p>
-//maybe put input?
 //max 2 operator
 //make = button
 },{"motion":"../../node_modules/motion/dist/es/motion/lib/index.mjs"}],"../../.nvm/versions/node/v22.11.0/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
@@ -8701,7 +8742,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "37251" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "41579" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
