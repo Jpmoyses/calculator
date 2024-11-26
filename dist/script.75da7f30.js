@@ -8631,10 +8631,8 @@ buttons.forEach(function (btn) {
       screenNumber.setAttribute("id", "num");
       screenNumber.innerText = number;
       screen.appendChild(screenNumber);
-      numberOfItems++;
       totalOfItems++;
       lastButton = btn.innerText;
-      if (totalOfItems >= 14) tooManyNumbers();else normalNumbers();
     });
   }
 
@@ -8642,7 +8640,7 @@ buttons.forEach(function (btn) {
   else {
     btn.addEventListener("click", function () {
       var number = btn.innerText;
-      if (lastButton == "+" || lastButton == "-" || lastButton == "/" || lastButton == "*") return;
+      if (lastButton == "+" || lastButton == "-" || lastButton == "/" || lastButton == "*" || totalOfItems == 0) return;
       // 0 operators doesnt show =
       if (totalOperators == 0 && btn.innerText == "=") return;
       totalOperators++;
@@ -8663,31 +8661,12 @@ buttons.forEach(function (btn) {
         lastButton = lastOperator;
         lastDot--;
       }
-      numberOfItems = 0;
-      if (totalOfItems >= 14) tooManyNumbers();else normalNumbers();
     });
   }
 });
 
-// changes font of the screen
-function tooManyNumbers() {
-  var allNumbers = document.querySelectorAll("p");
-  allNumbers.forEach(function (item) {
-    item.style.fontSize = "40px";
-  });
-}
-
-// changes font of the screen
-function normalNumbers() {
-  var allNumbers = document.querySelectorAll("p");
-  allNumbers.forEach(function (item) {
-    item.style.fontSize = "70px";
-  });
-}
-
 // clear the screen
 function clearAll() {
-  numberOfItems = 0;
   totalOfItems = 0;
   lastOperator = '';
   lastButton = '';
@@ -8730,6 +8709,8 @@ function concatNumbers(operator) {
 
   // calculate
   var totalCount = operate(Number(num1), operator, Number(num2));
+  // round if it has decimals
+  if (totalCount - Math.floor(totalCount) !== 0) totalCount = totalCount.toFixed(2);
   clearAll();
 
   // add it to the screen
@@ -8739,7 +8720,6 @@ function concatNumbers(operator) {
   screen.appendChild(newNum);
 }
 function operate(num1, operator, num2) {
-  console.log(num1, operator, num2);
   if (operator == "+") return num1 + num2;
   if (operator == "-") return num1 - num2;
   if (operator == "*") return num1 * num2;
@@ -8770,7 +8750,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "40955" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "34155" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

@@ -1,5 +1,5 @@
-//import {animate} from "https://cdn.jsdelivr.net/npm/motion@11.11.13/+esm";
-import {animate, easeOut, easeIn} from "motion";
+import {animate} from "https://cdn.jsdelivr.net/npm/motion@11.11.13/+esm";
+//import {animate, easeOut, easeIn} from "motion";
 
 let buttons = document.querySelectorAll("button");
 let screen = document.querySelector(".screen"); 
@@ -9,7 +9,6 @@ let totalOperators = 0;
 let lastOperator = '';
 let lastButton = '';
 let lastDot = 0;
-
 
 buttons.forEach((btn) =>{
 
@@ -48,11 +47,8 @@ buttons.forEach((btn) =>{
             screenNumber.setAttribute("id", "num");
             screenNumber.innerText = number;
             screen.appendChild(screenNumber);
-            numberOfItems ++;
             totalOfItems++;
             lastButton = btn.innerText;
-            if(totalOfItems >= 14) tooManyNumbers();
-            else normalNumbers();
         })
     }
 
@@ -60,7 +56,7 @@ buttons.forEach((btn) =>{
     else{
         btn.addEventListener("click", () =>{
             const number = btn.innerText;
-            if (lastButton == "+" || lastButton == "-" || lastButton == "/" || lastButton == "*") return;
+            if (lastButton == "+" || lastButton == "-" || lastButton == "/" || lastButton == "*" || totalOfItems == 0) return;
             // 0 operators doesnt show =
             if (totalOperators == 0 && btn.innerText == "=")return;
             totalOperators++;
@@ -78,33 +74,13 @@ buttons.forEach((btn) =>{
                 lastButton = lastOperator;
                 lastDot--;
             }
-
-            numberOfItems = 0;
-            if(totalOfItems >= 14) tooManyNumbers();
-            else normalNumbers();
         })
     }
 })
 
-// changes font of the screen
-function tooManyNumbers(){
-    let allNumbers = document.querySelectorAll("p");
-    allNumbers.forEach((item) =>{
-        item.style.fontSize = "40px";
-    })
-}
-
-// changes font of the screen
-function normalNumbers(){
-    let allNumbers = document.querySelectorAll("p");
-    allNumbers.forEach((item) =>{
-        item.style.fontSize = "70px";
-    })
-}
 
 // clear the screen
 function clearAll(){
-    numberOfItems = 0;
     totalOfItems = 0;
     lastOperator = '';
     lastButton = '';
@@ -140,6 +116,8 @@ function concatNumbers(operator){
     
     // calculate
     let totalCount = operate(Number(num1), operator, Number(num2));
+    // round if it has decimals
+    if ((totalCount - Math.floor(totalCount)) !== 0) totalCount = totalCount.toFixed(2);
     clearAll();
 
     // add it to the screen
@@ -150,7 +128,6 @@ function concatNumbers(operator){
 }
 
 function operate(num1, operator, num2){
-    console.log(num1, operator, num2);
     if(operator == "+") return num1 + num2;
     if(operator == "-") return num1 - num2;
     if(operator == "*") return num1 * num2;
