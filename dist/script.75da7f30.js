@@ -8632,6 +8632,7 @@ buttons.forEach(function (btn) {
       screenNumber.innerText = number;
       screen.appendChild(screenNumber);
       totalOfItems++;
+      numberOfItems++;
       lastButton = btn.innerText;
     });
   }
@@ -8640,8 +8641,9 @@ buttons.forEach(function (btn) {
   else {
     btn.addEventListener("click", function () {
       var number = btn.innerText;
+
       // prevents multiple operators in sequence, and allows operator right after pressing =
-      if ((lastButton == "+" || lastButton == "-" || lastButton == "/" || lastButton == "*" || totalOfItems == 0) && totalOperators > 0) return;
+      if (lastButton == "+" || lastButton == "-" || lastButton == "/" || lastButton == "*" || totalOfItems == 0) return;
 
       // 0 operators doesnt show =
       if (totalOperators == 0 && btn.innerText == "=") return;
@@ -8716,6 +8718,7 @@ function concatNumbers(operator) {
   var totalCount = operate(Number(num1), operator, Number(num2));
   if (totalCount - Math.floor(totalCount) !== 0) totalCount = totalCount.toFixed(2);
   clearAll();
+  totalOfItems++;
 
   // add it to the screen
   var newNum = document.createElement("p");
