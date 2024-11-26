@@ -8590,6 +8590,8 @@ var numberOfItems = 0;
 var totalOfItems = 0;
 var totalOperators = 0;
 var lastOperator = '';
+var lastButton = '';
+var lastDot = 0;
 buttons.forEach(function (btn) {
   // animations
   btn.addEventListener("mouseover", function () {
@@ -8622,6 +8624,7 @@ buttons.forEach(function (btn) {
   // numbers
   else if (btn.id != "op") {
     btn.addEventListener("click", function () {
+      if (btn.id == "num" && lastDot == 0) lastDot++;else if (btn.id == "num" && lastDot == 1) return;
       if (numberOfItems > 6) return;
       var number = btn.innerText;
       var screenNumber = document.createElement("p");
@@ -8630,6 +8633,7 @@ buttons.forEach(function (btn) {
       screen.appendChild(screenNumber);
       numberOfItems++;
       totalOfItems++;
+      lastButton = btn.innerText;
       if (totalOfItems >= 14) tooManyNumbers();else normalNumbers();
     });
   }
@@ -8638,6 +8642,7 @@ buttons.forEach(function (btn) {
   else {
     btn.addEventListener("click", function () {
       var number = btn.innerText;
+      if (lastButton == "+" || lastButton == "-" || lastButton == "/" || lastButton == "*") return;
       // 0 operators doesnt show =
       if (totalOperators == 0 && btn.innerText == "=") return;
       totalOperators++;
@@ -8655,6 +8660,8 @@ buttons.forEach(function (btn) {
         screenNumber.innerText = number;
         screen.appendChild(screenNumber);
         lastOperator = btn.innerText;
+        lastButton = lastOperator;
+        lastDot--;
       }
       numberOfItems = 0;
       if (totalOfItems >= 14) tooManyNumbers();else normalNumbers();
@@ -8682,6 +8689,9 @@ function normalNumbers() {
 function clearAll() {
   numberOfItems = 0;
   totalOfItems = 0;
+  lastOperator = '';
+  lastButton = '';
+  lastDot = 0;
   var allNumbers = document.querySelectorAll("p");
   allNumbers.forEach(function (item) {
     (0, _motion.animate)(item, {
@@ -8760,7 +8770,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "41579" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "40955" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

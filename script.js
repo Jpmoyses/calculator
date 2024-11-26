@@ -1,5 +1,5 @@
-import {animate} from "https://cdn.jsdelivr.net/npm/motion@11.11.13/+esm";
-//import {animate, easeOut, easeIn} from "motion";
+//import {animate} from "https://cdn.jsdelivr.net/npm/motion@11.11.13/+esm";
+import {animate, easeOut, easeIn} from "motion";
 
 let buttons = document.querySelectorAll("button");
 let screen = document.querySelector(".screen"); 
@@ -7,6 +7,8 @@ let numberOfItems = 0;
 let totalOfItems = 0;
 let totalOperators = 0;
 let lastOperator = '';
+let lastButton = '';
+let lastDot = 0;
 
 
 buttons.forEach((btn) =>{
@@ -38,6 +40,8 @@ buttons.forEach((btn) =>{
     // numbers
     else if(btn.id != "op"){
         btn.addEventListener("click", () =>{
+            if(btn.id == "num" && lastDot == 0) lastDot++;
+            else if (btn.id == "num" && lastDot == 1) return;
             if(numberOfItems > 6)return;
             const number = btn.innerText;
             let screenNumber = document.createElement("p");
@@ -46,6 +50,7 @@ buttons.forEach((btn) =>{
             screen.appendChild(screenNumber);
             numberOfItems ++;
             totalOfItems++;
+            lastButton = btn.innerText;
             if(totalOfItems >= 14) tooManyNumbers();
             else normalNumbers();
         })
@@ -55,6 +60,7 @@ buttons.forEach((btn) =>{
     else{
         btn.addEventListener("click", () =>{
             const number = btn.innerText;
+            if (lastButton == "+" || lastButton == "-" || lastButton == "/" || lastButton == "*") return;
             // 0 operators doesnt show =
             if (totalOperators == 0 && btn.innerText == "=")return;
             totalOperators++;
@@ -69,6 +75,8 @@ buttons.forEach((btn) =>{
                 screenNumber.innerText = number;
                 screen.appendChild(screenNumber);
                 lastOperator = btn.innerText;
+                lastButton = lastOperator;
+                lastDot--;
             }
 
             numberOfItems = 0;
@@ -98,6 +106,9 @@ function normalNumbers(){
 function clearAll(){
     numberOfItems = 0;
     totalOfItems = 0;
+    lastOperator = '';
+    lastButton = '';
+    lastDot = 0;
 
     let allNumbers = document.querySelectorAll("p");
     allNumbers.forEach((item) =>{
