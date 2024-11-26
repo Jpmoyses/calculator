@@ -56,12 +56,17 @@ buttons.forEach((btn) =>{
     else{
         btn.addEventListener("click", () =>{
             const number = btn.innerText;
-            if (lastButton == "+" || lastButton == "-" || lastButton == "/" || lastButton == "*" || totalOfItems == 0) return;
+            // prevents multiple operators in sequence, and allows operator right after pressing =
+            if ((lastButton == "+" || lastButton == "-" || lastButton == "/" || lastButton == "*" || totalOfItems == 0) 
+                && totalOperators > 0) return;
+
             // 0 operators doesnt show =
             if (totalOperators == 0 && btn.innerText == "=")return;
             totalOperators++;
+
             // only 2 sets of numbers can be dealt with a time, if more than 1 operator, operates and then adds the next operator
             if (totalOperators > 1 && btn.innerText != "=") {concatNumbers(lastOperator); totalOperators++;}
+
             // if generic operation (x+x=), computes normally
             else if(totalOperators > 1 && btn.innerText == "=") concatNumbers(lastOperator);
             
@@ -74,6 +79,7 @@ buttons.forEach((btn) =>{
                 lastButton = lastOperator;
                 lastDot--;
             }
+            numberOfItems = 0;
         })
     }
 })
@@ -114,9 +120,8 @@ function concatNumbers(operator){
     // remove count of operators
     totalOperators = 0;
     
-    // calculate
+    // calculate and round if it has decimals
     let totalCount = operate(Number(num1), operator, Number(num2));
-    // round if it has decimals
     if ((totalCount - Math.floor(totalCount)) !== 0) totalCount = totalCount.toFixed(2);
     clearAll();
 
