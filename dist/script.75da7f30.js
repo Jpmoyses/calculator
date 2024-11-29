@@ -8674,6 +8674,7 @@ buttons.forEach(function (btn) {
 
 // clear the screen
 function clearAll() {
+  numberOfItems = 0;
   totalOfItems = 0;
   lastOperator = '';
   lastButton = '';
@@ -8757,7 +8758,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "34155" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "39585" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

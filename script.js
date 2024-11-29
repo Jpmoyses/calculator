@@ -88,6 +88,7 @@ buttons.forEach((btn) =>{
 
 // clear the screen
 function clearAll(){
+    numberOfItems = 0;
     totalOfItems = 0;
     lastOperator = '';
     lastButton = '';
